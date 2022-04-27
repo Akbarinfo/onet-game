@@ -1,0 +1,2 @@
+let arrObj = []
+let arrXY = []
