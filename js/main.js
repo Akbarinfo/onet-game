@@ -1,18 +1,11 @@
 let listbox = document.querySelector('#listbox')
 
 //createlements
-
 function createElements(...array){
   return array.map((item) => {
     return document.createElement(item)
   })
 }
-
-// for (let i = 0; i < 4; i++) {
-//     pokemons.forEach((item) => {
-//         arrObj.push(item)
-//     })
-// }
 
 for(let i = 0; i < 4; i++) {
   for(let l = 0; l < pokemons.length; l++) {
@@ -21,14 +14,14 @@ for(let i = 0; i < 4; i++) {
 }
 
 
-let arr_length = 60
+let time = 60
 for (let i = 0; i < 41; i++) {
-    const idx1 = Math.floor(Math.random() * arr_length);
-    const idx2 = Math.floor(Math.random() * arr_length);
+    let onecicle = Math.floor(Math.random() * time);
+    let twocicle = Math.floor(Math.random() * time);
 
-    const temp = arrObj[idx1];
-    arrObj[idx1] = arrObj[idx2];
-    arrObj[idx2] = temp;
+    let one = arrObj[onecicle];
+    arrObj[onecicle] = arrObj[twocicle];
+    arrObj[twocicle] = one;
 }
 
 let count = 0
@@ -54,7 +47,6 @@ function addDisplay() {
     btns.appendChild(imgs)
 
     //quloq qoyib ketish qismi
-
     btns.addEventListener('click', (e) => {
       if(count == 0) {
         btn1 = e.path[2]
@@ -96,16 +88,20 @@ function remove(btn1, btn2) {
     if((y1 ==  y2 && x1 == x2 - 1 ) || (x1 > x2 && x1 - 1 == x2 && y1 == y2)) {
       btn1.classList.add('poke__opac')
       btn2.classList.add('poke__opac')
-    } else if((y1 > y2 && y1 - 1 == y2 && x1 == x2)|| (y1 ==  y2 - 1 && x1  == x2 )) {
+    }
+    else if((y1 > y2 && y1 - 1 == y2 && x1 == x2)|| (y1 ==  y2 - 1 && x1  == x2 )) {
       btn1.classList.add('poke__opac')
       btn2.classList.add('poke__opac')
-    } else if ((y1 == 1 && (x1 > x2 || x1 < x2)) || (y1 == 6 && (x1 < x2 || x1 > x2))) {
+    }
+    if ((y1 == 1 && (x1 > x2 || x1 < x2)) || (y1 == 6 && (x1 < x2 || x1 > x2))) {
       btn1.classList.add('poke__opac')
       btn2.classList.add('poke__opac')
-    } else if((x1 == 1 && (y1 > y2 || y1 < y2)) || (x1 == 10 &&( y1 < y2 || y1 > y2))) {
+    }
+    else if((x1 == 1 && (y1 > y2 || y1 < y2)) || (x1 == 10 &&( y1 < y2 || y1 > y2))) {
       btn1.classList.add('poke__opac')
       btn2.classList.add('poke__opac')
-    } else {
+    }
+     else {
       let opacCount = 0
       if(opacElem?.length) {
         for(let li of opacElem) {
@@ -118,7 +114,8 @@ function remove(btn1, btn2) {
         btn2.classList.add('poke__opac')
       }
     }
-  } else {
+  }
+   else {
     console.log('teng emas')
   }
 
@@ -132,5 +129,4 @@ function remove(btn1, btn2) {
     listbox.innerHTML = null
     addDisplay()
   }
-  // console.log(btn1, btn2)
 }

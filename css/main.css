@@ -89,6 +89,10 @@ html {
   background-color: #9cd6f8;
 }
 
+.poke__btn:active {
+  background-color: #000;
+}
+
 .poke__img {
   width: 100%;
   -o-object-fit: cover;
