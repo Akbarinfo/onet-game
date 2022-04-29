@@ -81,12 +81,22 @@ html {
   border: none;
   overflow: hidden;
   border-radius: 8px;
+  -webkit-transition: all 0.4s linear;
+  transition: all 0.4s linear;
+}
+
+.poke__btn:hover {
+  background-color: #9cd6f8;
 }
 
 .poke__img {
   width: 100%;
   -o-object-fit: cover;
      object-fit: cover;
+}
+
+.poke__opac {
+  opacity: 0;
 }
 
 /* FOOTER PART */

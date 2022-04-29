@@ -1,29 +1,28 @@
 let listbox = document.querySelector('#listbox')
 
-for (let i = 0; i < 4; i++) {
-    pokemons.forEach((item) => {
-        arrObj.push(item)
-    })
+//createlements
+
+function createElements(...array){
+  return array.map((item) => {
+    return document.createElement(item)
+  })
 }
 
-//
-// for(let i = 0; i < 4; i++) {
-//   for(let l = 0; l < pokemons.length; l++) {
-
-//   }
+// for (let i = 0; i < 4; i++) {
+//     pokemons.forEach((item) => {
+//         arrObj.push(item)
+//     })
 // }
-//
 
-for(let i = 1; i < 7; i++) {
-  for(let m = 1; m < 11; m++) {
-    arrXY.push({y: i, x: m})
+for(let i = 0; i < 4; i++) {
+  for(let l = 0; l < pokemons.length; l++) {
+    arrObj.push(pokemons[l])
   }
 }
 
-console.log(arrXY)
 
 let arr_length = 60
-for (let i = 0; i < 100; i++) {
+for (let i = 0; i < 41; i++) {
     const idx1 = Math.floor(Math.random() * arr_length);
     const idx2 = Math.floor(Math.random() * arr_length);
 
@@ -32,6 +31,10 @@ for (let i = 0; i < 100; i++) {
     arrObj[idx2] = temp;
 }
 
+let count = 0
+let btn1 = null
+let btn2 = null
+let opacElem = null
 
 function addDisplay() {
   let x = 1
@@ -42,13 +45,28 @@ function addDisplay() {
       y++
     }
 
-    let li = document.createElement("li");
-    li.className = `poke__item X-${x} Y-${y}`;
-    li.innerHTML = `
-      <button id="btn" class="poke__btn">
-        <img class="poke__img" src="${item.img}" alt="img">
-      </button>
-    `;
+    let [li, btns, imgs] = createElements('li', 'button', 'img')
+    li.className = `poke__item x-${x} y-${y}`;
+    btns.className = 'poke__btn'
+    btns.id = `${item.id}`
+    imgs.className = 'poke__img'
+    imgs.setAttribute('src', item.img)
+    btns.appendChild(imgs)
+
+    //quloq qoyib ketish qismi
+
+    btns.addEventListener('click', (e) => {
+      if(count == 0) {
+        btn1 = e.path[2]
+        ++count
+      } else {
+        btn2 = e.path[2]
+        --count
+        remove(btn1, btn2)
+      }
+    })
+
+    li.appendChild(btns)
     listbox.appendChild(li);
     x++
   });
@@ -57,5 +75,62 @@ function addDisplay() {
 addDisplay()
 
 
+function remove(btn1, btn2) {
 
-console.log(arrObj)
+  let allLi = [...document.querySelectorAll('li')]
+
+  if(btn1.children[0].id == btn2.children[0].id) {
+    let btn1Kor = btn1.className.split(' ')
+    let btn2Kor = btn2.className.split(' ')
+    let y1 = btn1Kor.at(-1).split('-').at(-1)
+    let x1 = btn1Kor.at(-2).split('-').at(-1)
+    let y2 = btn2Kor.at(-1).split('-').at(-1)
+    let x2 = btn2Kor.at(-2).split('-').at(-1)
+
+    if(+x1 < +x2) {
+      opacElem = allLi.slice((+y1-1) * 10 + (+x1), (+y1-1) * 10 + +x2-1)
+    } else if( +x1 > +x2) {
+      opacElem = allLi.slice((+y1-1) * 10 + (+x2), (+y1-1) * 10 + +x1-1)
+    }
+
+    if((y1 ==  y2 && x1 == x2 - 1 ) || (x1 > x2 && x1 - 1 == x2 && y1 == y2)) {
+      btn1.classList.add('poke__opac')
+      btn2.classList.add('poke__opac')
+    } else if((y1 > y2 && y1 - 1 == y2 && x1 == x2)|| (y1 ==  y2 - 1 && x1  == x2 )) {
+      btn1.classList.add('poke__opac')
+      btn2.classList.add('poke__opac')
+    } else if ((y1 == 1 && (x1 > x2 || x1 < x2)) || (y1 == 6 && (x1 < x2 || x1 > x2))) {
+      btn1.classList.add('poke__opac')
+      btn2.classList.add('poke__opac')
+    } else if((x1 == 1 && (y1 > y2 || y1 < y2)) || (x1 == 10 &&( y1 < y2 || y1 > y2))) {
+      btn1.classList.add('poke__opac')
+      btn2.classList.add('poke__opac')
+    } else {
+      let opacCount = 0
+      if(opacElem?.length) {
+        for(let li of opacElem) {
+          if(li.className.includes('poke__opac')) ++opacCount
+        }
+      }
+      console.log(opacCount, opacElem?.length)
+      if(opacCount == opacElem?.length && opacElem.length > 1) {
+        btn1.classList.add('poke__opac')
+        btn2.classList.add('poke__opac')
+      }
+    }
+  } else {
+    console.log('teng emas')
+  }
+
+  let liOpacCount = 0
+  for(let li of allLi) {
+    if(li.className.includes('poke__opac')) ++liOpacCount
+  }
+
+  if(liOpacCount == allLi.length) {
+    alert('you win')
+    listbox.innerHTML = null
+    addDisplay()
+  }
+  // console.log(btn1, btn2)
+}
